@@ -1,0 +1,8 @@
+# local working or sensitive directory
+credentials/*
+!credentials/*.example
+json/*
+ics/*
+
+# Python template
+__pycache__
