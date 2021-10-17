@@ -8,16 +8,16 @@ import datetime, os, traceback, logging
 from login import login
 from get_json import digdown, nameCSV
 
-stuList = []
-prefixStr = "./"
+stuListGlobal = []
+prefixStr = "/home/"
 
 
-def atOnce() -> None:
+def atOnce(stuList) -> None:
     os.makedirs(prefixStr + nameCSV, exist_ok = True)
     os.makedirs(prefixStr + "ics", exist_ok = True)
     logging.basicConfig(level="DEBUG")
     with open(prefixStr + "credentials/oauth", "r") as fileIO:
-        sessionGet = login(fileIO.readline(), fileIO.readline())
+        sessionGet = login(fileIO.readline().split()[0], fileIO.readline().split()[0])
         if not sessionGet:
             raise Exception("session get error")
         # else:
@@ -35,4 +35,5 @@ def atOnce() -> None:
 
 
 if __name__ == "__main__":
-    atOnce()
+    stuListGlobal = [i for i in range(20210001, 20216482 + 1)] + [i for i in range(20200001, 20206471 + 1)]
+    atOnce(stuListGlobal)
