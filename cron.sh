@@ -4,11 +4,12 @@
 
 cd $APP_DIR
 ./server & # >> /home/go.log
-echo "25 8,16 * * * python3 $APP_DIR/cron_task/cron.py >> /home/cron.log 2>&1" >> /etc/cron.d/python-cron
+mkdir /etc/cron.d -p
+echo "25 14 2,5 * * python3 $APP_DIR/pytask/cron.py >> /home/cron.log 2>&1" >> /etc/cron.d/python-cron
 crontab /etc/cron.d/python-cron
 echo "[INFO] Python now initializing..."
-python3 ./cron_task/cron.py # >> /home/cron.log 2>&1
+python3 ./pytask/cron.py # >> /home/cron.log 2>&1
 echo "[INFO] Cron as foreground..."
-cron -f
+supercronic /etc/cron.d/python-cron
 # service cron start
 # /bin/bash

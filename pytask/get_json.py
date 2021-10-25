@@ -2,7 +2,7 @@
 import requests, sys, os, time, traceback, logging
 from login import headers
 
-nameCSV = "json"
+nameCSV = "/json"
 
 def digdown(stuNum, sessionLogin):
     logger = logging.getLogger(__name__)
@@ -23,7 +23,7 @@ def digdown(stuNum, sessionLogin):
             ret = 0
             logger.error("<!>wrong_status_code")
             break
-        with open(endPro, "wb") as fileIO:
+        with open("." + endPro, "wb") as fileIO:
             fileIO.write(ret.content)
         logger.debug("done " + str(stuNum))
         return ret.content

@@ -3,6 +3,7 @@ credentials/*
 !credentials/*.example
 json/*
 ics/*
+go_src/server/server
 
 # Python template
 __pycache__

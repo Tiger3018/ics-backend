@@ -1,9 +1,13 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
+	"fmt"
 	"log"
-	"strconv"
+	"os"
+	"os/exec"
+	"strings"
+
+	"github.com/gin-gonic/gin"
 	// "net/http"
 	// "regexp"
 )
@@ -18,25 +22,40 @@ type preferenceStudent struct {
 	AlertTime int  `form:"alerttime"`
 }
 
-func main() {
-	gin.SetMode(gin.ReleaseMode)
-	router := gin.Default()
-	router.GET("/student/:id", func(c *gin.Context) {
+func parseStaticICS(b1 bool) gin.HandlerFunc {
+	return func(c *gin.Context) {
 		var prefer preferenceStudent
+		fileName := c.Param("id")
+		checkInput := strings.Split(fileName, ".")
 		if c.ShouldBind(&prefer) == nil {
-			log.Println(prefer)
+			log.Println("prefer list:", prefer)
 		} else {
 			c.String(400, "Your paramater may be incorrect...")
 			return
 		}
-		_, err := strconv.Atoi(c.Param("id"))
-		if err == nil {
-			c.File("./ics/" + c.Param("id") + ".ics")
+		if len(checkInput) == 2 && checkInput[1] == "ics" && len(strings.Split(checkInput[0], "/")) == 1 {
+			if b1 != false {
+				out, err := exec.Command("python3", "pytask/single.py", checkInput[0]).CombinedOutput()
+				if err != nil {
+					fmt.Printf("%s\n", out)
+					log.Println("when exec(), some error happened...", err)
+				} else {
+					fmt.Printf("%s\n", out)
+				}
+			}
+			c.File("./ics/" + fileName)
 		} else {
-			// c.String(400, "Your request is not a student number:"+c.Param("id")+"\n")
-			log.Println(err)
+			c.String(400, "Your input may be insecure...")
 			return
 		}
-	})
-	log.Fatal(router.Run("0.0.0.0:8080"))
+	}
+}
+
+func main() {
+	gin.SetMode(gin.ReleaseMode)
+	router := gin.Default()
+	router.GET("/student-cron/:id", parseStaticICS(false))
+	router.GET("/student/:id", parseStaticICS(true))
+	log.Print("Server listening...\n")
+	log.Fatal(router.Run("0.0.0.0:" + os.Getenv("PORT")))
 }
