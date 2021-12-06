@@ -4,6 +4,7 @@ credentials/*
 json/*
 ics/*
 go_src/server/server
+.vscode
 
 # Python template
 __pycache__
