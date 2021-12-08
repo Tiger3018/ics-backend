@@ -84,13 +84,13 @@ def load_from_json(data, force_whole_week=False):
     Returns:
         list[tuple]: 课表数据
     """
-    timetable = json.loads(data)["data"]
+    timetable = json.loads(data)["classTimetableVOList"]
     return [(cour["courseName"],
              cour["classNbr"],
              (cour["teachingWeekFormat"],
               cour["weekDayFormat"], cour["periodFormat"]),
              cour["roomName"],
-             ','.join(i["instructorName"] for i in cour["classTimetableInstrVOList"]))
+             cour["instructorName"])
             for cour in timetable
             if force_whole_week
             or cour['periodFormat']
