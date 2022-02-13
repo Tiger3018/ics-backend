@@ -3,7 +3,7 @@ import requests, sys, os, time, traceback, logging
 from login import headers
 
 nameCSV = "/json"
-termId = 1038
+termId = 1039 # 2022 春
 
 def digdown(stuNum, sessionLogin):
     logger = logging.getLogger(__name__)

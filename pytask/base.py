@@ -25,7 +25,7 @@ def atOncePassword(stuList) -> None:
             try:
                 jsonStr = digdown(i, sessionGet)
                 rawData = load_from_json(jsonStr)
-                rawIcal = mkical(rawData, datetime.date(2021, 8, 30), 0)
+                rawIcal = mkical(rawData, datetime.date(2022, 2, 14), 0)
                 with open(prefixStr + "/ics/" + str(i) + ".ics", "wb") as outputIO:
                     outputIO.write(rawIcal.to_ical())
             except Exception as e :
@@ -47,7 +47,7 @@ def atOnceOauthSession(stuNum : str) -> None:
     try:
         jsonStr = digdown(stuNum, sessionGet)
         if rawData := load_from_json(jsonStr): # no class info
-            rawIcal = mkical(rawData, datetime.date(2021, 8, 30), 0)
+            rawIcal = mkical(rawData, datetime.date(2022, 2, 14), 0)
             with open(prefixStr + "/ics/" + stuNum + ".ics", "wb") as outputIO:
                 outputIO.write(rawIcal.to_ical())
         else:
